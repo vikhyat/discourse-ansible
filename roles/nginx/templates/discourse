@@ -3,9 +3,7 @@ types {
 }
 
 upstream discourse {
-  {% for i in range(num_webs) %}
-    server unix:/home/discourse/sockets/thin.{{i}}.sock;
-  {% endfor %}
+  server localhost:3000;
 }
 
 # Redirect all other domain names to the specified domain name.

@@ -5,7 +5,7 @@
 
 - name: nginx | update apt cache
   apt: update_cache=yes
-  only_if: ${add_nginx_ppa.changed}
+  when: add_nginx_ppa.changed
 
 - name: nginx | install nginx
   apt: pkg=nginx state=present
@@ -22,7 +22,7 @@
 
 - name: nginx | restart nginx
   service: name=nginx state=restarted
-  only_if: ${nginx_config.changed}
+  when: nginx_config.changed
 
 - name: nginx | copy site configuration
   template: src=discourse dest=/etc/nginx/sites-enabled/discourse
@@ -30,4 +30,4 @@
 
 - name: nginx | restart nginx
   service: name=nginx state=restarted
-  only_if: ${site_config.changed}
+  when: site_config.changed
