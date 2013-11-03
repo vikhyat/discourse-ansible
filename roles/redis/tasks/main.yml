@@ -5,7 +5,7 @@
 
 - name: redis | update apt cache
   apt: update_cache=yes
-  only_if: ${add_redis_ppa.changed}
+  when: add_redis_ppa.changed
 
 - name: redis | install redis-server
   apt: pkg=redis-server state=present
