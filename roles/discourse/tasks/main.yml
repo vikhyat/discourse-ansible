@@ -12,21 +12,9 @@
         owner=discourse
         group=discourse
 
-- name: discourse | copy config/database.yml
-  template: src=database.yml
-            dest=/home/discourse/discourse/config/database.yml
-            owner=discourse
-            group=discourse
-
-- name: discourse | copy config/redis.yml
-  template: src=redis.yml
-            dest=/home/discourse/discourse/config/redis.yml
-            owner=discourse
-            group=discourse
-
-- name: discourse | copy config/environments/production.rb
-  template: src=production.rb
-            dest=/home/discourse/discourse/config/environments/production.rb
+- name: discourse | copy discourse.conf
+  template: src=discourse.conf
+            dest=/home/discourse/discourse/config/discourse.conf
             owner=discourse
             group=discourse
 
@@ -57,14 +45,14 @@
         group=discourse
 
 - name: discourse | bundle install
-  command: /bin/bash --login -c "cd /home/discourse/discourse && RAILS_ENV=production RAILS4=1 bundle install --deployment --without test"
+  command: /bin/bash --login -c "cd /home/discourse/discourse && RAILS_ENV=production bundle install --deployment --without test"
 #  when: git_repo.changed
 
 - name: discourse | precompile assets
-  command: /bin/bash --login -c "cd /home/discourse/discourse && RUBY_GC_MALLOC_LIMIT={{ruby_gc_malloc_limit}} RAILS_ENV=production RAILS4=1 bundle exec rake assets:precompile"
+  command: /bin/bash --login -c "cd /home/discourse/discourse && RUBY_GC_MALLOC_LIMIT={{ruby_gc_malloc_limit}} RAILS_ENV=production bundle exec rake assets:precompile"
 
 - name: discourse | migrate database
-  command: /bin/bash --login -c "cd /home/discourse/discourse && RUBY_GC_MALLOC_LIMIT={{ruby_gc_malloc_limit}} RAILS_ENV=production RAILS4=1 bundle exec rake db:migrate"
+  command: /bin/bash --login -c "cd /home/discourse/discourse && RUBY_GC_MALLOC_LIMIT={{ruby_gc_malloc_limit}} RAILS_ENV=production bundle exec rake db:migrate"
 
 - name: discourse | copy monit config
   template: src=monit
